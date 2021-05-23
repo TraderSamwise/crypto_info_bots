@@ -5,9 +5,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-      environment:
-        CONSUMER_KEY: ${CONSUMER_KEY}
-        CONSUMER_SECRET: ${CONSUMER_SECRET}
-        ACCESS_TOKEN: ${ACCESS_TOKEN}
-        ACCESS_SECRET: ${ACCESS_SECRET}
-        DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
+    environment:
+      CONSUMER_KEY: ${CONSUMER_KEY}
+      CONSUMER_SECRET: ${CONSUMER_SECRET}
+      ACCESS_TOKEN: ${ACCESS_TOKEN}
+      ACCESS_SECRET: ${ACCESS_SECRET}
+      DISCORD_WEBHOOK_URL: ${DISCORD_WEBHOOK_URL}
