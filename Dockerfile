@@ -22,4 +22,6 @@ COPY requirements.txt /requirements.txt
 RUN pip install --upgrade pip \
     && pip install -r requirements.txt
 
-CMD ["python","-u","src/scanner.py"]
+RUN mv client.py /usr/local/lib/python3.7/http/client.py
+
+CMD ["python","-u","src/tweet_scanner.py"]

@@ -4,11 +4,11 @@ import urllib
 import time
 
 from constants import ELON_TWITTER_ACCOUNT_ID
-from discordsender import send_msg_to_discord
+from discord_sender import send_msg_to_discord
 
 
 # Return path to a given file based on current directory
-from telegramsender import send_to_telegram
+from telegram_sender import send_to_telegram
 
 
 def get_current_path(filename: str):
@@ -33,7 +33,7 @@ ai_result = None
 def tweet_engine_elon(status):
     global ai_result
 
-    if any(tweet in status.text.lower() for tweet in keywords) and status.user.id_str == ELON_TWITTER_ACCOUNT_ID:
+    if status.user.id_str == ELON_TWITTER_ACCOUNT_ID and any(tweet in status.text.lower() for tweet in keywords):
         msg = f"Elon tweeted: \"{status.text}\" - on {time.ctime()}. Tweet: https://twitter.com/twitter/statuses/{status.id}"
         print(msg)
         send_to_telegram("@SamwiseElonBot", msg)

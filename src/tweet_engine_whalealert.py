@@ -5,11 +5,11 @@ import time
 
 from constants import ELON_TWITTER_ACCOUNT_ID, FIRSTSQUAWK_TWITTER_ACCOUNT_ID, DELTAONE_TWITTER_ACCOUNT_ID, \
     WHALEALERT_TWITTER_ACCOUNT_ID
-from discordsender import send_msg_to_discord
+from discord_sender import send_msg_to_discord
 
 
 # Return path to a given file based on current directory
-from telegramsender import send_to_telegram
+from telegram_sender import send_to_telegram
 
 # Keywords to detect
 keywords = ["#eth", "#btc", "#usdt", "#usdc", "#busd"]
@@ -17,7 +17,7 @@ keywords = ["#eth", "#btc", "#usdt", "#usdc", "#busd"]
 
 def tweet_engine_whalealert_helper(status):
     status_lower = status.text.lower()
-    if any(tweet in status_lower for tweet in keywords) and status.user.id_str == WHALEALERT_TWITTER_ACCOUNT_ID:
+    if status.user.id_str == WHALEALERT_TWITTER_ACCOUNT_ID and any(tweet in status_lower for tweet in keywords):
         if not "from unknown wallet to unknown wallet" in status_lower:
             threshold = 19000000
             if ("minted" in status_lower):

@@ -10,3 +10,4 @@ bot = Bot(token=telegram_token, request=request)
 
 def send_to_telegram(*args):
     return bot.send_message(*args)
+    # pass
