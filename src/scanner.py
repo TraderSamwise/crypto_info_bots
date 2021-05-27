@@ -1,67 +1,77 @@
+from read_env import read_env
+read_env()
+
+from tweet_engine_whalealert import tweet_engine_whalealert
 import time
+from tweet_engine_elon import tweet_engine_elon
+from tweet_engine_news import tweet_engine_news
+
 
 import tweepy
 from apiconfig import startup
-from constants import TWITTER_ACCOUNT_ID
-from tweets import tweet_engine
-import os
-import re
-from urllib3.exceptions import ProtocolError
+
+from constants import ELON_TWITTER_ACCOUNT_ID, DELTAONE_TWITTER_ACCOUNT_ID, FIRSTSQUAWK_TWITTER_ACCOUNT_ID, \
+    WHALEALERT_TWITTER_ACCOUNT_ID
+
+from threading import Thread
 
 
-class MyStreamListener(tweepy.StreamListener):
+class ElonStreamListener(tweepy.StreamListener):
     def on_status(self, status):
-        tweet_engine(status)
+        tweet_engine_elon(status)
 
+class NewsStreamListener(tweepy.StreamListener):
+    def on_status(self, status):
+        tweet_engine_news(status)
 
-def main():
+class WhaleAlertStreamListener(tweepy.StreamListener):
+    def on_status(self, status):
+        tweet_engine_whalealert(status)
+
+def run_stream(StreamListener, follow):
     # Connect to the Twitter API
     api = startup()
-    elon_tweet_listener = tweepy.Stream(auth=api.auth, listener=MyStreamListener())
+    tweet_stream = tweepy.Stream(auth=api.auth, listener=StreamListener())
     # '44196397' is the ID for the @elonmusk account
     while True:
         print("looping")
         try:
-            elon_tweet_listener.filter(follow=[TWITTER_ACCOUNT_ID])
+            print(follow)
+            tweet_stream.filter(follow=follow, is_async=False)
         except tweepy.error.RateLimitError as e:
             print(e)
             time.sleep(60)
         except Exception as e:
             print(e)
             time.sleep(5)
+        time.sleep(5)
 
 
-def read_env():
-    """Pulled from Honcho code with minor updates, reads local default
-    environment variables from a .env file located in the project root
-    directory.
-    """
-    try:
-        with open('.env') as f:
-            content = f.read()
-    except IOError:
-        content = ''
+threads = []
+def main():
+    # t1 = Thread(target=run_stream, args=(ElonStreamListener, [ELON_TWITTER_ACCOUNT_ID]))
+    # t1.daemon = True
+    # t1.start()
+    # threads.append(t1)
+    #
+    # t2 = Thread(target=run_stream, args=(NewsStreamListener, [DELTAONE_TWITTER_ACCOUNT_ID, FIRSTSQUAWK_TWITTER_ACCOUNT_ID]))
+    # t2.daemon = True
+    # t2.start()
+    # threads.append(t2)
+    #
+    t3 = Thread(target=run_stream, args=(WhaleAlertStreamListener, [WHALEALERT_TWITTER_ACCOUNT_ID]))
+    t3.daemon = True
+    t3.start()
+    threads.append(t3)
 
-    if content == '':
-        try:
-            with open('../.env') as f:
-                content = f.read()
-        except IOError:
-            content = ''
+    # run_stream(WhaleAlertStreamListener, [WHALEALERT_TWITTER_ACCOUNT_ID])
 
-    for line in content.splitlines():
-        m1 = re.match(r'\A([A-Za-z_0-9]+)=(.*)\Z', line)
-        if m1:
-            key, val = m1.group(1), m1.group(2)
-            m2 = re.match(r"\A'(.*)'\Z", val)
-            if m2:
-                val = m2.group(1)
-            m3 = re.match(r'\A"(.*)"\Z', val)
-            if m3:
-                val = re.sub(r'\\(.)', r'\1', m3.group(1))
-            os.environ.setdefault(key, val)
+    for x in threads:
+        x.join()
+
+
+
 
 if __name__ == "__main__":
-    read_env()
     main()
 

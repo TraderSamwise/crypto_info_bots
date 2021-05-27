@@ -9,5 +9,6 @@ def send_to_discord(msg):
     response = requests.post(webhook_url, json=msg)
     return response
 
-def send_msg_to_discort(content):
+def send_msg_to_discord(content):
     return send_to_discord({"content": content})
+    # pass

@@ -3,11 +3,14 @@ from imageai.Detection.Custom import CustomObjectDetection
 import urllib
 import time
 
-from constants import TWITTER_ACCOUNT_ID
-from discordsender import send_msg_to_discort
+from constants import ELON_TWITTER_ACCOUNT_ID
+from discordsender import send_msg_to_discord
 
 
 # Return path to a given file based on current directory
+from telegramsender import send_to_telegram
+
+
 def get_current_path(filename: str):
     if "src" in os.getcwd():
         return os.path.join(os.path.dirname(os.getcwd()), filename)
@@ -27,15 +30,16 @@ keywords = ["stock", "share", "$", "doge", "crypto", "bitcoin"]
 ai_result = None
 
 
-def tweet_engine(status):
+def tweet_engine_elon(status):
     global ai_result
 
-    if any(tweet in status.text.lower() for tweet in keywords) and status.user.id_str == TWITTER_ACCOUNT_ID:
+    if any(tweet in status.text.lower() for tweet in keywords) and status.user.id_str == ELON_TWITTER_ACCOUNT_ID:
         msg = f"Elon tweeted: \"{status.text}\" - on {time.ctime()}. Tweet: https://twitter.com/twitter/statuses/{status.id}"
         print(msg)
-        send_msg_to_discort(msg)
+        send_to_telegram("@SamwiseElonBot", msg)
+        send_msg_to_discord(msg)
     # If no keywords match, check if there is an image
-    elif hasattr(status, "extended_entities") and status.user.id_str == TWITTER_ACCOUNT_ID:
+    elif hasattr(status, "extended_entities") and status.user.id_str == ELON_TWITTER_ACCOUNT_ID:
         # Loop through each image
         for media in status.extended_entities["media"]:
             """
@@ -57,7 +61,8 @@ def tweet_engine(status):
                     ai_result = True
         # At this point we know image passed AI validation
         if ai_result is True:
-            msg = f'Elon tweeted doge picture  - on {time.ctime()}. Tweet: {status.text}'
+            msg = f'Elon tweeted crypto related picture  - on {time.ctime()}. Tweet: {status.text}'
             print(msg)
-            send_msg_to_discort(msg)
+            send_to_telegram("@SamwiseElonBot", msg)
+            send_msg_to_discord(msg)
             ai_result = False
