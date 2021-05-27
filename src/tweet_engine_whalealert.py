@@ -29,7 +29,7 @@ def tweet_engine_whalealert_helper(status):
                 msg = f"Whale Alert tweeted: \"{status.text}\" - on {time.ctime()}. Tweet: https://twitter.com/twitter/statuses/{status.id}"
                 print(msg)
                 send_to_telegram("@SamwiseOnChainBot", msg)
-                send_msg_to_discord(msg)
+                send_msg_to_discord(msg, "SECONDARY_DISCORD_WEBHOOK_URL")
 
 def tweet_engine_whalealert(status):
     try:
