@@ -49,18 +49,15 @@ def run_stream(StreamListener, follow):
 
 threads = []
 def main():
-    # t1 = Thread(target=run_stream, args=(ElonStreamListener, [ELON_TWITTER_ACCOUNT_ID]))
-    # t1.daemon = True
-    # t1.start()
-    # threads.append(t1)
+    t1 = Thread(target=run_stream, args=(ElonStreamListener, [ELON_TWITTER_ACCOUNT_ID]), daemon=True)
+    t1.start()
+    threads.append(t1)
+
+    t2 = Thread(target=run_stream, args=(NewsStreamListener, [DELTAONE_TWITTER_ACCOUNT_ID, FIRSTSQUAWK_TWITTER_ACCOUNT_ID]), daemon=True)
+    t2.start()
+    threads.append(t2)
     #
-    # t2 = Thread(target=run_stream, args=(NewsStreamListener, [DELTAONE_TWITTER_ACCOUNT_ID, FIRSTSQUAWK_TWITTER_ACCOUNT_ID]))
-    # t2.daemon = True
-    # t2.start()
-    # threads.append(t2)
-    #
-    t3 = Thread(target=run_stream, args=(WhaleAlertStreamListener, [WHALEALERT_TWITTER_ACCOUNT_ID]))
-    t3.daemon = True
+    t3 = Thread(target=run_stream, args=(WhaleAlertStreamListener, [WHALEALERT_TWITTER_ACCOUNT_ID]), daemon=True)
     t3.start()
     threads.append(t3)
 
