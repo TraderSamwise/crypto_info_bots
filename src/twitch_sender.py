@@ -34,13 +34,9 @@ class Bot(commands.Bot):
     def send_message_direct(self, message):
         chan = self.chan
         print(chan)
-        try:
-            asyncio.ensure_future(chan.send(message))
-        except Exception as e:
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
-            loop.run_until_complete(chan.send(message))
-        # await chan.send(message)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(chan.send(message))
 
 
 bot = Bot()
