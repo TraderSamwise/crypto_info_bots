@@ -27,7 +27,7 @@ detector.setJsonPath(get_current_path("detection_config.json"))
 detector.loadModel()
 
 # Keywords to detect
-keywords = ["stock", "share", "$", "doge", "crypto", "bitcoin", "ethereum", " eth "]
+keywords = ["stock", "share", "$", "doge", "crypto", "bitcoin", "ethereum", " eth ", "energy", "moon"]
 ai_result = None
 
 
