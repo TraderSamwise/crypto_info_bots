@@ -19,7 +19,7 @@ keywords = ["#eth", "#btc", "#usdt", "#usdc", "#busd"]
 
 def tweet_engine_whalealert_helper(status):
     status_lower = status.text.lower()
-    if status.user.id_str == WHALEALERT_TWITTER_ACCOUNT_ID and any(tweet in status_lower for tweet in keywords):
+    if any(tweet in status_lower for tweet in keywords):
         if not "from unknown wallet to unknown wallet" in status_lower:
             threshold = 19000000
             if ("minted" in status_lower):

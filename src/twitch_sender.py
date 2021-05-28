@@ -1,9 +1,9 @@
 import asyncio
-import time
 import os
 from threading import Thread
 
 from twitchio.ext import commands
+
 bot_account_name = "BOT_ACCOUNT_NAME"
 token = os.getenv("TWITCH_OAUTH_TOKEN")
 client_id = os.getenv("TWITCH_CLIENT_ID")
@@ -42,7 +42,7 @@ class Bot(commands.Bot):
 bot = Bot()
 t = Thread(target=bot.run)
 t.start()
-time.sleep(3)
+
 def send_to_twitch(msg):
     return bot.send_message_direct(msg)
 

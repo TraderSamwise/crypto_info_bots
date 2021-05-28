@@ -34,7 +34,7 @@ ai_result = None
 def tweet_engine_elon(status):
     global ai_result
 
-    if status.user.id_str == ELON_TWITTER_ACCOUNT_ID and any(tweet in status.text.lower() for tweet in keywords):
+    if any(tweet in status.text.lower() for tweet in keywords):
         msg = f"Elon tweeted: \"{status.text}\" - on {time.ctime()}. Tweet: https://twitter.com/twitter/statuses/{status.id}"
         print(msg)
         send_to_telegram("@SamwiseElonBot", msg)
@@ -63,7 +63,7 @@ def tweet_engine_elon(status):
                     ai_result = True
         # At this point we know image passed AI validation
         if ai_result is True:
-            msg = f'Elon tweeted crypto related picture  - on {time.ctime()}. Tweet: {status.text}'
+            msg = f'Elon tweeted image  - on {time.ctime()}. Tweet: {status.text}'
             print(msg)
             send_to_telegram("@SamwiseElonBot", msg)
             send_to_twitch(msg)
