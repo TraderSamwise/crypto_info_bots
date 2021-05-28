@@ -9,6 +9,7 @@ from discord_sender import send_msg_to_discord
 
 # Return path to a given file based on current directory
 from telegram_sender import send_to_telegram
+from twitch_sender import send_to_twitch
 
 
 def get_current_path(filename: str):
@@ -26,7 +27,7 @@ detector.setJsonPath(get_current_path("detection_config.json"))
 detector.loadModel()
 
 # Keywords to detect
-keywords = ["stock", "share", "$", "doge", "crypto", "bitcoin"]
+keywords = ["stock", "share", "$", "doge", "crypto", "bitcoin", "ethereum", " eth "]
 ai_result = None
 
 
@@ -37,6 +38,7 @@ def tweet_engine_elon(status):
         msg = f"Elon tweeted: \"{status.text}\" - on {time.ctime()}. Tweet: https://twitter.com/twitter/statuses/{status.id}"
         print(msg)
         send_to_telegram("@SamwiseElonBot", msg)
+        send_to_twitch(msg)
         send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
     # If no keywords match, check if there is an image
     elif hasattr(status, "extended_entities") and status.user.id_str == ELON_TWITTER_ACCOUNT_ID:
@@ -64,5 +66,6 @@ def tweet_engine_elon(status):
             msg = f'Elon tweeted crypto related picture  - on {time.ctime()}. Tweet: {status.text}'
             print(msg)
             send_to_telegram("@SamwiseElonBot", msg)
+            send_to_twitch(msg)
             send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
             ai_result = False

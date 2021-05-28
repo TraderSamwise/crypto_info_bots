@@ -10,3 +10,4 @@ matplotlib==3.3.2
 opencv-python
 keras-resnet==0.2.0
 python-telegram-bot==13.5
+twitchio==1.2.3

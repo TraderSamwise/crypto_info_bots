@@ -11,8 +11,10 @@ from discord_sender import send_msg_to_discord
 from telegram_sender import send_to_telegram
 
 # Keywords to detect
-keywords = ["coin", "doge", "crypto", "bitcoin", "coinbase", "bitmex", "gemini", "kraken", "binance", "token",
-            "cryptocurrency", "altcoin", "altcoins", "eth", "ethereum", "coins"]
+from twitch_sender import send_to_twitch
+
+keywords = ["coin", "doge", "crypto", "bitcoin", "coinbase", "bitmex", "gemini", "kraken", "binance", "digital token", "blockchain",
+            "cryptocurrency", "altcoin", "altcoins", " eth ", "ethereum", "coins"]
 
 
 def tweet_engine_news(status):
@@ -24,4 +26,5 @@ def tweet_engine_news(status):
         msg = f"{auth} tweeted: \"{status.text}\" - on {time.ctime()}. Tweet: https://twitter.com/twitter/statuses/{status.id}"
         print(msg)
         send_to_telegram("@SamwiseNewsBot", msg)
+        send_to_twitch(msg)
         send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")

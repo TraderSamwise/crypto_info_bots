@@ -12,6 +12,8 @@ from discord_sender import send_msg_to_discord
 from telegram_sender import send_to_telegram
 
 # Keywords to detect
+from twitch_sender import send_to_twitch
+
 keywords = ["#eth", "#btc", "#usdt", "#usdc", "#busd"]
 
 
@@ -29,6 +31,7 @@ def tweet_engine_whalealert_helper(status):
                 msg = f"Whale Alert tweeted: \"{status.text}\" - on {time.ctime()}. Tweet: https://twitter.com/twitter/statuses/{status.id}"
                 print(msg)
                 send_to_telegram("@SamwiseOnChainBot", msg)
+                send_to_twitch(msg)
                 send_msg_to_discord(msg, "SECONDARY_DISCORD_WEBHOOK_URL")
 
 def tweet_engine_whalealert(status):

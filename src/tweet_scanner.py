@@ -1,5 +1,9 @@
+
+# THIS NEEDS TO BE AT THE TOP, OR IMPORTATED FILES WONT HAVE ENV VARIABLES IN DEV
 from read_env import read_env
 read_env()
+
+
 from multi_thread_stream_listener import MultiThreadStreamListener
 from tweepy_stream_safe import TweepyStreamSafe
 from tweet_engine_dispatcher import tweet_engine_dispatcher
