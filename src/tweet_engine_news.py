@@ -5,14 +5,14 @@ import time
 
 from constants import ELON_TWITTER_ACCOUNT_ID, FIRSTSQUAWK_TWITTER_ACCOUNT_ID, DELTAONE_TWITTER_ACCOUNT_ID, \
     LIVESQUAWK_TWITTER_ACCOUNT_ID, DB_TWITTER_ACCOUNT_ID
-from discord_sender import send_msg_to_discord
+from sender_discord import send_msg_to_discord
 
 
 # Return path to a given file based on current directory
-from telegram_sender import send_to_telegram
+from sender_telegram import send_to_telegram
 
 # Keywords to detect
-from twitch_sender import send_to_twitch
+from sender_twitch import send_to_twitch
 
 keywords = ["coin", "doge", "crypto", "bitcoin", "coinbase", "bitmex", "gemini", "kraken", "binance", "digital token", "blockchain",
             "cryptocurrency", "altcoin", "altcoins", " eth ", "ethereum", "coins", "bitconnect"]

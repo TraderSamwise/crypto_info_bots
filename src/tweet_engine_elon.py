@@ -3,13 +3,14 @@ from imageai.Detection.Custom import CustomObjectDetection
 import urllib
 import time
 
+from apiconfig import get_tweepy_api
 from constants import ELON_TWITTER_ACCOUNT_ID
-from discord_sender import send_msg_to_discord
+from sender_discord import send_msg_to_discord
 
 
 # Return path to a given file based on current directory
-from telegram_sender import send_to_telegram
-from twitch_sender import send_to_twitch
+from sender_telegram import send_to_telegram
+from sender_twitch import send_to_twitch
 
 
 def get_current_path(filename: str):
@@ -30,20 +31,24 @@ detector.loadModel()
 keywords = ["stock", "share", "$", "doge", "crypto", "bitcoin", "ethereum", " eth ", "energy", "moon"]
 ai_result = None
 
+def get_thread(status):
+    twitter_thread = []
+    tweep_api = get_tweepy_api()
+    curr_status = status
+    while True:
+        if not  curr_status['in_reply_to_status_id']:
+            break
+        curr_status = tweep_api.get_status(curr_status['in_reply_to_status_id'])
+        twitter_thread.append(curr_status)
+    return twitter_thread
 
-def tweet_engine_elon(status):
-    global ai_result
+def check_tweet_for_keyword(status):
+    return any(tweet in status['text'].lower() for tweet in keywords)
 
-    if any(tweet in status.text.lower() for tweet in keywords):
-        msg = f"Elon tweeted: \"{status.text}\" - on {time.ctime()}. Tweet: https://twitter.com/twitter/statuses/{status.id}"
-        print(msg)
-        send_to_telegram("@SamwiseElonBot", msg)
-        send_to_twitch(msg)
-        send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
-    # If no keywords match, check if there is an image
-    elif hasattr(status, "extended_entities") and status.user.id_str == ELON_TWITTER_ACCOUNT_ID:
+def check_tweet_for_image(status):
+    if "extended_entities" in status:
         # Loop through each image
-        for media in status.extended_entities["media"]:
+        for media in status['extended_entities']['media']:
             """
             Download and write the tweet image.
             This will overwrite each new tested image to
@@ -60,12 +65,34 @@ def tweet_engine_elon(status):
             # If detection data matches any of the keywords send e-mail
             for detection in detections:
                 if any(name in detection["name"] for name in keywords):
-                    ai_result = True
-        # At this point we know image passed AI validation
-        if ai_result is True:
-            msg = f'Elon tweeted image  - on {time.ctime()}. Tweet: {status.text}'
-            print(msg)
-            send_to_telegram("@SamwiseElonBot", msg)
-            send_to_twitch(msg)
-            send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
-            ai_result = False
+                    return True
+    return False
+
+def tweet_engine_elon(status):
+    # convert to dict bc rest api to fetch thread uses dict
+    status = status.__dict__
+
+    # check if elon tweet itself matches criteria
+    if check_tweet_for_keyword(status):
+        msg = f"Elon tweeted: \"{status['text']}\" - on {time.ctime()}. Tweet: https://twitter.com/twitter/statuses/{status['id']}"
+        print(msg)
+        send_to_telegram("@SamwiseElonBot", msg)
+        send_to_twitch(msg)
+        send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
+    elif check_tweet_for_image(status):
+        msg = f'Elon tweeted image  - on {time.ctime()}. Tweet: {status["text"]}'
+        print(msg)
+        send_to_telegram("@SamwiseElonBot", msg)
+        send_to_twitch(msg)
+        send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
+    # check if thread itself matches criteria
+    else:
+        twitter_thread = get_thread(status)
+        for thread_status in twitter_thread:
+            if check_tweet_for_keyword(thread_status) or check_tweet_for_image(thread_status) or any(tweet in thread_status['user']['name'] for tweet in keywords):
+                msg = f"Elon responded to a crypto tweet: \"{status['text']}\" - on {time.ctime()}. Tweet: https://twitter.com/twitter/statuses/{status['id']}"
+                print(msg)
+                send_to_telegram("@SamwiseElonBot", msg)
+                send_to_twitch(msg)
+                send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
+                return

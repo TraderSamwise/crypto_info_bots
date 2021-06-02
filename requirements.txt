@@ -11,3 +11,4 @@ opencv-python
 keras-resnet==0.2.0
 python-telegram-bot==13.5
 twitchio==1.2.3
+ccxt==1.50.66

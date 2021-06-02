@@ -8,10 +8,10 @@ from tweepy_stream_safe import TweepyStreamSafe
 from tweet_engine_dispatcher import tweet_engine_dispatcher
 
 
-from apiconfig import startup
+from apiconfig import get_tweepy_api
 
 from constants import ELON_TWITTER_ACCOUNT_ID, DELTAONE_TWITTER_ACCOUNT_ID, FIRSTSQUAWK_TWITTER_ACCOUNT_ID, \
-    WHALEALERT_TWITTER_ACCOUNT_ID, LIVESQUAWK_TWITTER_ACCOUNT_ID, DB_TWITTER_ACCOUNT_ID
+    WHALEALERT_TWITTER_ACCOUNT_ID, LIVESQUAWK_TWITTER_ACCOUNT_ID, DB_TWITTER_ACCOUNT_ID, COINBASE_PRO_TWITTER_ACCOUNT_ID
 
 
 class DispatcherStreamListener(MultiThreadStreamListener):
@@ -20,8 +20,8 @@ class DispatcherStreamListener(MultiThreadStreamListener):
 
 def run_stream(StreamListener, follow):
     # Connect to the Twitter API
-    api = startup()
-    tweet_stream = TweepyStreamSafe(auth=api.auth, listener=StreamListener())
+    tweepy_api = get_tweepy_api()
+    tweet_stream = TweepyStreamSafe(auth=tweepy_api.auth, listener=StreamListener())
     print(follow)
     tweet_stream.filter(follow=follow)
 
@@ -32,6 +32,7 @@ def main():
         FIRSTSQUAWK_TWITTER_ACCOUNT_ID,
         LIVESQUAWK_TWITTER_ACCOUNT_ID,
         DB_TWITTER_ACCOUNT_ID,
+        COINBASE_PRO_TWITTER_ACCOUNT_ID,
         WHALEALERT_TWITTER_ACCOUNT_ID
     ])
 

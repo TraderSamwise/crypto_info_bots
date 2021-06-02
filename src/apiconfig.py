@@ -4,8 +4,12 @@ import os
 
 logger = logging.getLogger()
 
+api = None
 
-def startup():
+def get_tweepy_api():
+    global api
+    if api:
+        return api
     consumer_key = os.getenv("CONSUMER_KEY")
     consumer_secret = os.getenv("CONSUMER_SECRET")
     access_token = os.getenv("ACCESS_TOKEN")
