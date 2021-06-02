@@ -181,6 +181,11 @@ class Bot(commands.Bot):
     async def position(self, ctx):
         await self.positions_helper(ctx)
 
+        # Commands use a different decorator
+    @commands.command(name='pos')
+    async def pos(self, ctx):
+        await self.positions_helper(ctx)
+
 
     def send_message_direct(self, message):
         chan = self.chan
