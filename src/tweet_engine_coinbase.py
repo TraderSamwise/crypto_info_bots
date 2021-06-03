@@ -7,7 +7,7 @@ from sender_telegram import send_to_telegram
 # Keywords to detect
 from sender_twitch import send_to_twitch
 
-keywords = ["starting today"]
+keywords = ["starting today, trading on"]
 
 
 def tweet_engine_coinbase(status):

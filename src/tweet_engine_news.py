@@ -33,3 +33,4 @@ def tweet_engine_news(status):
         send_to_telegram("@SamwiseNewsBot", msg)
         send_to_twitch(msg)
         send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
+        send_msg_to_discord(msg, "SECRET_NEWS_DISCORD_WEBHOOK_URL")
