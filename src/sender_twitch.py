@@ -42,7 +42,7 @@ def format_side(v):
 def format_bybit_positions(positions):
     msgs = []
     for pos in positions:
-        msgs.append(f'[symbol: {pos["symbol"]}, side: {format_side(pos["side"])}, size: {format_usd(pos["size"])} USD, entry: {format_usd(pos["entry_price"])}, UnrlPNL: {format_btc(pos["unrealised_pnl"])}]')
+        msgs.append(f'[symbol: {pos["symbol"]}, side: {format_side(pos["side"])}, size: {format_usd(pos["size"])} USD, entry: {format_usd(pos["entry_price"])}, UnrlPNL: {format_btc(pos["unrealised_pnl"])}, RealPNL: {format_btc(pos["realised_pnl"])}]')
     return msgs
 
 def format_ftx_size(v):
