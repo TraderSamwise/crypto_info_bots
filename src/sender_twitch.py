@@ -46,7 +46,7 @@ def format_bybit_positions(positions):
     return msgs
 
 def format_ftx_size(v):
-    return format_usd(v[1:])
+    return format_usd(str(abs(float(v))))
 
 def format_ftx_positions(positions):
     msgs = []
