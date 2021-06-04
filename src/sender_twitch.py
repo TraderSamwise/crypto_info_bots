@@ -68,11 +68,17 @@ class Bot(CustomTwitchBot):
 
 
     async def positions_helper(self, ctx):
+        if not hasattr(self, "_notified_timeout"):
+            self._notified_timeout = False
         if not hasattr(self, "_last_fetch_positions"):
             self._last_fetch_positions = datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
         now = datetime.datetime.now()
-        if (now - self._last_fetch_positions).seconds < 5:
+        if (now - self._last_fetch_positions).seconds < 60:
+            if not self._notified_timeout:
+                self._notified_timeout = True
+                await ctx.send("Command is timed out...")
             return
+        self._notified_timeout = False
         self._last_fetch_positions = now
         bybit_positions = exchange_bybit.v2_private_get_position_list()
         bybit_open_positions = [position['data'] for position in bybit_positions['result'] if position['data']['size'] != '0']
