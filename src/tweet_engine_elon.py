@@ -78,15 +78,17 @@ def tweet_engine_elon(status):
         print(msg)
         send_to_telegram("@SamwiseElonBot", msg)
         send_to_twitch(msg)
-        send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
+        send_msg_to_discord(msg, "SAMWISE_ELON_DISCORD_WEBHOOK_URL")
         send_msg_to_discord(msg, "SECRET_ELON_DISCORD_WEBHOOK_URL")
+        send_msg_to_discord(msg, "NINJASCALP_ELON_DISCORD_WEBHOOK_URL")
     elif check_tweet_for_image(status):
         msg = f'Elon tweeted image  - on {time.ctime()}. Tweet: {status["text"]}'
         print(msg)
         send_to_telegram("@SamwiseElonBot", msg)
         send_to_twitch(msg)
-        send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
+        send_msg_to_discord(msg, "SAMWISE_ELON_DISCORD_WEBHOOK_URL")
         send_msg_to_discord(msg, "SECRET_ELON_DISCORD_WEBHOOK_URL")
+        send_msg_to_discord(msg, "NINJASCALP_ELON_DISCORD_WEBHOOK_URL")
     # check if thread itself matches criteria
     else:
         twitter_thread = get_thread(status)
@@ -96,6 +98,7 @@ def tweet_engine_elon(status):
                 print(msg)
                 send_to_telegram("@SamwiseElonBot", msg)
                 send_to_twitch(msg)
-                send_msg_to_discord(msg, "PRIMARY_DISCORD_WEBHOOK_URL")
+                send_msg_to_discord(msg, "SAMWISE_ELON_DISCORD_WEBHOOK_URL")
                 send_msg_to_discord(msg, "SECRET_ELON_DISCORD_WEBHOOK_URL")
+                send_msg_to_discord(msg, "NINJASCALP_ELON_DISCORD_WEBHOOK_URL")
                 return

@@ -32,8 +32,9 @@ def tweet_engine_whalealert_helper(status):
                 print(msg)
                 send_to_telegram("@SamwiseOnChainBot", msg)
                 send_to_twitch(msg)
-                send_msg_to_discord(msg, "SECONDARY_DISCORD_WEBHOOK_URL")
+                send_msg_to_discord(msg, "SAMWISE_ON_CHAIN_DISCORD_WEBHOOK_URL")
                 send_msg_to_discord(msg, "SECRET_ON_CHAIN_DISCORD_WEBHOOK_URL")
+                send_msg_to_discord(msg, "NINJASCALP_ON_CHAIN_DISCORD_WEBHOOK_URL")
 
 def tweet_engine_whalealert(status):
     try:
