@@ -9,6 +9,12 @@ class CustomTwitchBot(commands.Bot):
         # await self.send_message_direct("dude")
         # print(message)
         try:
+            if message.channel.name == 'botbotsamwise' and message.content == 'HeyGuys':
+                try:
+                    ctx = await self.get_context(message)
+                    await self.positions_helper(ctx)
+                except Exception as e:
+                    return await self.event_error(e, message.raw_data)
             await self.handle_commands(message)
         except Exception as e:
             print(e)

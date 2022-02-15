@@ -58,7 +58,7 @@ class Bot(CustomTwitchBot):
 
     def __init__(self):
         super().__init__(irc_token=token, client_id=client_id, nick='botbotsamwise', prefix='!',
-                         initial_channels=['tradersamwise'])
+                         initial_channels=['tradersamwise', 'botbotsamwise'])
 
     # Events don't need decorators when subclassed
     async def event_ready(self):
@@ -68,22 +68,26 @@ class Bot(CustomTwitchBot):
 
 
     async def positions_helper(self, ctx):
-        if not hasattr(self, "_notified_timeout"):
-            self._notified_timeout = False
-        if not hasattr(self, "_last_fetch_positions"):
-            self._last_fetch_positions = datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
-        now = datetime.datetime.now()
-        if (now - self._last_fetch_positions).seconds < 60:
-            if not self._notified_timeout:
-                self._notified_timeout = True
-                await ctx.send("Command is timed out...")
-            return
-        self._notified_timeout = False
-        self._last_fetch_positions = now
+        await ctx.send("No open positions.")
+        # await ctx.send("Command disabled.")
+        # return
+        # if not hasattr(self, "_notified_timeout"):
+        #     self._notified_timeout = 0
+        # if not hasattr(self, "_last_fetch_positions"):
+        #     self._last_fetch_positions = datetime.datetime(2009, 1, 6, 15, 8, 24, 78915)
+        # now = datetime.datetime.now()
+        # time_since_last = (now - self._last_fetch_positions).seconds
+        # if time_since_last < 60:
+        #     if self._notified_timeout < 3:
+        #         self._notified_timeout += 1
+        #         await ctx.send(f'Command timed out for {60-time_since_last} more seconds...')
+        #     return
+        # self._notified_timeout = 0
+        # self._last_fetch_positions = now
         bybit_positions = exchange_bybit.v2_private_get_position_list()
         bybit_open_positions = [position['data'] for position in bybit_positions['result'] if position['data']['size'] != '0']
         # https://github.com/ccxt/ccxt/issues/9213
-        ftx_positions = exchange_ftx.private_get_positions({'showAvgPrice': False})
+         
         ftx_open_positions = [position for position in ftx_positions['result'] if position['size'] != '0.0']
         bybit_msgs = format_bybit_positions(bybit_open_positions)
         for msg in bybit_msgs:
@@ -94,20 +98,20 @@ class Bot(CustomTwitchBot):
         if len(bybit_msgs) == 0 and len (ftx_msgs) == 0:
             await ctx.send("No open positions.")
 
-    # Commands use a different decorator
-    @commands.command(name='positions')
-    async def positions(self, ctx):
-        await self.positions_helper(ctx)
-
-    # Commands use a different decorator
-    @commands.command(name='position')
-    async def position(self, ctx):
-        await self.positions_helper(ctx)
+    # # Commands use a different decorator
+    # @commands.command(name='positions')
+    # async def positions(self, ctx):
+    #     await self.positions_helper(ctx)
+    #
+    # # Commands use a different decorator
+    # @commands.command(name='position')
+    # async def position(self, ctx):
+    #     await self.positions_helper(ctx)
 
         # Commands use a different decorator
-    @commands.command(name='pos')
-    async def pos(self, ctx):
-        await self.positions_helper(ctx)
+    # @commands.command(name='pos')
+    # async def pos(self, ctx):
+    #     await self.positions_helper(ctx)
 
 
     def send_message_direct(self, message):

@@ -1,4 +1,4 @@
-tweepy==3.10.0
+tweepy==4.4.0
 imageai==2.1.6
 tensorflow==2.4.1
 keras==2.4.3
