@@ -28,4 +28,15 @@ If you would like to use this yourself, and receive juicy e-mail notifications e
 Elon tweets, you can too! All you have to do is to have a [Twitter Developer account](https://developer.twitter.com/en) and update the following environmental variables with your
 Twitter API access keys:
 
+## Production Docker ##
 
+Install Docker and Docker Compose. https://docs.docker.com/compose/
+Make sure `docker-compose.yml` file has `.env` vars correctly configured.
+Then from the base dir run `docker-compose up`
+
+## Customization ##
+
+If you don't need all functionality (like pushing to discord) you may have to dig into the code and disable any usage of related `.env` vars. This project wasn't intended for public use and it hasn't been designed well for configurability 
+
+
+USE AT YOUR OWN RISK. NOT FINANCIAL ADVICE.
