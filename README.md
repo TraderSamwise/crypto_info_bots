@@ -13,7 +13,7 @@ $ pip install -r requirements.txt
 ```
 
 Note:
-I have *not* included my trained AI model in the repository due to the large file size - 
+The original AI model from the original repo is not included due to size. 
 you can get it by navigating to the [releases](https://github.com/PiotrRut/elonmusk-twitter-notifier/releases) tab, downloading `doge-ai.h5` and placing it in the root
 of the project.
 
