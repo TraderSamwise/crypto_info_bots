@@ -22,11 +22,14 @@ of the project.
 `pip install -r requirements.txt`
 copy `.env_template` to `.env` and fill in the desired `.env` vars
 
-## Twitter Developer Account 👨🏻‍💻
+## Twitter Developer Account
 
 If you would like to use this yourself, and receive juicy e-mail notifications every time
-Elon tweets, you can too! All you have to do is to have a [Twitter Developer account](https://developer.twitter.com/en) and update the following environmental variables with your
-Twitter API access keys:
+Elon tweets, you can too! All you have to do is to have a [Twitter Developer account](https://developer.twitter.com/en) and update the environmental variables with your credentials
+
+## Accounts to follow
+
+You can configure the `src/constants.py` file directly to specify what twitter accounts to follow. `src/tweet_engine_dispatcher.py` is used to choose which handler to use when a new tweet comes in so you can handle different tweets from different accounts with different actions.
 
 ## Production Docker ##
 
