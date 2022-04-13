@@ -19,8 +19,12 @@ of the project.
 
 ## Install ##
 
-`pip install -r requirements.txt`
+`pip install -r requirements.txt`.
 copy `.env_template` to `.env` and fill in the desired `.env` vars
+
+## Run ##
+
+From the top level dir run `python src/tweet_scanner.py` to start the bots
 
 ## Twitter Developer Account
 
