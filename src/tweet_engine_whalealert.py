@@ -1,16 +1,8 @@
-import os
-from imageai.Detection.Custom import CustomObjectDetection
-import urllib
 import time
 
-from constants import ELON_TWITTER_ACCOUNT_ID, FIRSTSQUAWK_TWITTER_ACCOUNT_ID, DELTAONE_TWITTER_ACCOUNT_ID, \
-    WHALEALERT_TWITTER_ACCOUNT_ID
 from sender_discord import send_msg_to_discord
-
-
 # Return path to a given file based on current directory
 from sender_telegram import send_to_telegram
-
 # Keywords to detect
 from sender_twitch import send_to_twitch
 

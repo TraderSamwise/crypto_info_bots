@@ -1,26 +1,33 @@
-import tweepy
-from queue import Queue
-from threading import Thread
+from python_utils.generic_utils import get_secret_helper
+import asyncio
+from tweepy import asynchronous
 
 
-class MultiThreadStreamListener(tweepy.Stream):
+class MultiThreadTwitterStreamListener(asynchronous.AsyncStream):
+    '''
+    Streams from Twitter API via Tweepy as a dedicated service
+    '''
+
+    def __init__(self, consumer_key=None, consumer_secret=None, access_token=None, access_token_secret=None):
+
+        consumer_key = consumer_key or get_secret_helper("TWITTER_CONSUMER_KEY")
+        consumer_secret = consumer_secret or get_secret_helper("TWITTER_CONSUMER_SECRET")
+        access_token = access_token or get_secret_helper("TWITTER_ACCESS_TOKEN")
+        access_token_secret = access_token_secret or get_secret_helper("TWITTER_ACCESS_SECRET")
+
+        self.follow = []
+        super().__init__(consumer_key, consumer_secret, access_token,
+                         access_token_secret)
+
+
     def run_forever(self, follow):
-        self.q = Queue()
-        num_worker_threads = 4
-        for i in range(num_worker_threads):
-            t = Thread(target=self.do_stuff)
-            t.daemon = True
-            t.start()
-        self.filter(follow=follow)
+        self.follow = follow
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        loop.run_until_complete(self.filter(follow=follow))
 
-    def on_status(self, status):
-        self.q.put(status)
+    async def on_status(self, status):
+        asyncio.create_task(self.process_status(status))
 
-
-    def process_status(self, status):
+    async def process_status(self, status):
         pass
-
-    def do_stuff(self):
-        while True:
-            self.process_status(self.q.get())
-            self.q.task_done()

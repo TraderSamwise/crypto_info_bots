@@ -1,16 +1,10 @@
-import os
-from imageai.Detection.Custom import CustomObjectDetection
-import urllib
 import time
 
-from constants import ELON_TWITTER_ACCOUNT_ID, FIRSTSQUAWK_TWITTER_ACCOUNT_ID, DELTAONE_TWITTER_ACCOUNT_ID, \
-    LIVESQUAWK_TWITTER_ACCOUNT_ID, DB_TWITTER_ACCOUNT_ID
+from constants import FIRSTSQUAWK_TWITTER_ACCOUNT_ID, DELTAONE_TWITTER_ACCOUNT_ID, \
+    LIVESQUAWK_TWITTER_ACCOUNT_ID, DB_TWITTER_ACCOUNT_ID, CZ_TWITTER_ACCOUNT_ID
 from sender_discord import send_msg_to_discord
-
-
 # Return path to a given file based on current directory
 from sender_telegram import send_to_telegram
-
 # Keywords to detect
 from sender_twitch import send_to_twitch
 
@@ -20,7 +14,9 @@ keywords = ["coin", "doge", "crypto", "bitcoin", "coinbase", "bitmex", "gemini",
 
 def tweet_engine_news(status):
     if any(tweet in status.text.lower() for tweet in keywords):
-        if (status.user.id_str == DELTAONE_TWITTER_ACCOUNT_ID):
+        if (status.user.id_str == CZ_TWITTER_ACCOUNT_ID):
+            auth = "CZ"
+        elif (status.user.id_str == DELTAONE_TWITTER_ACCOUNT_ID):
             auth = "Bloomberg (DeltaOne)"
         elif (status.user.id_str == FIRSTSQUAWK_TWITTER_ACCOUNT_ID):
             auth = "FirstSquawk"
